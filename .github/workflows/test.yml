@@ -26,15 +26,9 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --configuration Release --no-build --verbosity normal --logger:"trx;"
-    - name: List Results
-      run: |
-        pwd
-        ls /home/runner/work/Float.TinCan/Float.TinCan/Float.TinCan.Tests/TestResults/
     - name: Publish Test Results
-      uses: dorny/test-reporter@v1
+      uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
-        name: Test Results
-        path: "**/*.trx"
-        reporter: dotnet-trx
-        fail-on-error: true
+        files: |
+          "**/*.trx"  
