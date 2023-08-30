@@ -35,4 +35,4 @@ jobs:
       if: always()
       with:
         files: |
-          Float.TinCan.Tests/TestResults/*.trx  
+          /github/workspace/Float.TinCan.Tests/TestResults/*.trx  
