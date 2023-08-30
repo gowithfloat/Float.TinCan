@@ -31,8 +31,10 @@ jobs:
         pwd
         ls /home/runner/work/Float.TinCan/Float.TinCan/Float.TinCan.Tests/TestResults/
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
+      uses: dorny/test-reporter@v1
       if: always()
       with:
-        files: |
-          /github/workspace/Float.TinCan.Tests/TestResults/*.trx  
+        name: Test Results
+        path: "**/*.trx"
+        reporter: dotnet-trx
+        fail-on-error: true
