@@ -33,4 +33,4 @@ jobs:
       if: always()
       with:
         files: |
-          **/TestResults/*.trx  
+          /github/workspace/Float.TinCan.Tests/TestResults/*.trx  
