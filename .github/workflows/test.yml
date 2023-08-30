@@ -35,4 +35,4 @@ jobs:
       if: always()
       with:
         files: |
-          Float.TinCan/Float.TinCan/Float.TinCan.Tests/TestResults/*.trx  
+          Float.TinCan.Tests/TestResults/*.trx  
