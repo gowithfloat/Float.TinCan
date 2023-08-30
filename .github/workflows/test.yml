@@ -31,4 +31,4 @@ jobs:
       if: always()
       with:
         files: |
-          /home/runner/work/Float.TinCan/**/TestResults/*.trx  
+          /home/runner/work/Float.TinCan/Float.TinCan/Float.TinCan.Tests/TestResults/*.trx  
