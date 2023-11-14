@@ -747,13 +747,6 @@ namespace TinCan
                     { "If-Match", document.etag },
                 };
             }
-            else
-            {
-                request.Headers = new Dictionary<string, string>
-                {
-                    { "If-None-Match", "*" },
-                };
-            }
 
             // An LRS responding to a PUT request MUST handle the
             // "If-None-Match" header as described in RFC2616,
