@@ -494,10 +494,12 @@ namespace TinCan
         }
 
         /// <inheritdoc/>
-        public Task<LRSResponse> SaveAgentProfile(AgentProfileDocument profile)
+        public async Task<LRSResponse> SaveAgentProfile(AgentProfileDocument profile)
         {
             Contract.Requires(profile != null);
-            return SaveAgentProfile(profile, RequestType.put);
+            var currentProfile = await RetrieveAgentProfile(profile.id, profile.agent);
+            profile.etag = currentProfile?.content?.etag;
+            return await SaveAgentProfile(profile, currentProfile == null ? RequestType.put : RequestType.post);
         }
 
         /// <inheritdoc/>
@@ -725,7 +727,7 @@ namespace TinCan
                 document.contentType = "application/json";
             }
 
-            var contentType = MediaTypeHeaderValue.Parse(document.contentType);
+            var contentType = MediaTypeHeaderValue.TryParse(document.contentType, out var contentMediaType) ? contentMediaType : MediaTypeHeaderValue.Parse("application/json");
 
             var request = new LRSHttpRequest
             {
@@ -736,11 +738,31 @@ namespace TinCan
                 Content = document.content,
             };
 
+            // A Client making a PUT request to either the Agent Profile Resource
+            // MUST include the "If-Match" header or the If-None-Match header.
             if (document.etag != null)
             {
                 request.Headers = new Dictionary<string, string>
                 {
                     { "If-Match", document.etag },
+                };
+            }
+            else
+            {
+                request.Headers = new Dictionary<string, string>
+                {
+                    { "If-None-Match", "*" },
+                };
+            }
+
+            // An LRS responding to a PUT request MUST handle the
+            // "If-None-Match" header as described in RFC2616,
+            // HTTP 1.1 if it contains "*"
+            else if (requestType == RequestType.put)
+            {
+                request.Headers = new Dictionary<string, string>
+                {
+                    { "If-None-Match", "*" },
                 };
             }
 
