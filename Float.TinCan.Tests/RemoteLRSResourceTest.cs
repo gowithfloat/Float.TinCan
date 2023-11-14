@@ -330,7 +330,7 @@ namespace TinCan.Tests
             {
                 agent = Support.agent,
                 id = "test",
-                content = System.Text.Encoding.UTF8.GetBytes("Test value"),
+                content = System.Text.Encoding.UTF8.GetBytes("{\"Test\": \"value\"}"),
             };
 
             var lrsRes = await lrs.SaveAgentProfile(doc);
